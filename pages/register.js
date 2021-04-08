@@ -1,6 +1,6 @@
 import Header from '../components/header'
 import Link from 'next/link'
-import * as React from 'react'
+import React from 'react'
 //import axios from 'axios';
 
 export default function SignUp() {

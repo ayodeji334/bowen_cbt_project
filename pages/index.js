@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
-import axios from 'axios'
+//import axios from 'axios'
 
 export default function SignIn() {
     const [matric_number, setMatricNumber] = React.useState('');
