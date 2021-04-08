@@ -1,4 +1,4 @@
-import Header from '../components/Header'
+import Header from '../components/header'
 import Link from 'next/link'
 import * as React from 'react'
 //import axios from 'axios';
