@@ -15,7 +15,7 @@ export default function AvaliableCourses({ data }) {
     ];
     
     return (
-        <div className="w-full bg-gray-200">
+        <div className="w-full bg-gray-200 h-full">
             <Header title="Exam Instructions" />
             <Navbar username="Odunayo Fawumi" />
             <div className="container mx-auto pt-24">
