@@ -11,8 +11,8 @@ import * as React from 'react'
 //     AlertDialogCloseButton,
 //     Button
 // } from "@chakra-ui/react"
-import Navbar from "../../../components/Navbar"
-import Header from '../../../components/Header'
+import Navbar from "../../../components/navbar"
+import Header from '../../../components/header'
 //import verifyToken from "../api/v1/auth/verifyToken"
 
 export default function ExamInstructions({ data }) {
