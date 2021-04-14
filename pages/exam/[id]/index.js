@@ -25,7 +25,7 @@ export default function ExamInstructions({ data }) {
     // }
     
     return (
-        <div className="w-full bg-gray-100">
+        <div className="w-full bg-gray-200">
             <Header title="Exam Instructions" />
             <Navbar username="Odunayo Fawumi"/>
             <div className="container mx-auto pt-24">
