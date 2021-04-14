@@ -10,7 +10,7 @@ html,body,#__next{
     overflow-x: hidden;
 }
 .bg_overlay{
-    background: linear-gradient(0deg, #030d1fea, #010816be), url('../public/bg_pic.jpg');
+    background: linear-gradient(0deg, #0e013db7, #040346bd), url('../public/bg_pic.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

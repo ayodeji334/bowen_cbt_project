@@ -51,16 +51,16 @@ export default function SignIn() {
     }
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full bg_overlay">
             <div className="w-full h-full">
                 <Header title="Login Page" />
                 <div className="w-full h-full">
-                    <div className=" w-full h-full flex flex-row">
-                        <div className="lg:block hidden w-1/2 h-full px-20">
+                    <div className="w-full h-full flex flex-row">
+                        <div className="lg:block hidden w-1/2 h-full px-20 text-white">
                             <div className="h-full w-full flex flex-col justify-center text-left">
                                 <h1 className="text-5xl font-extrabold py-5 mb-4">Hello, Bowenite</h1>
                                 <h2 className="text-3xl font-extrabold py-3">Instructions</h2>
-                                <p className="text-lg font-normal pt-2">
+                                <p className="text-lg xl:text-sm pt-2">
                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                   incididunt ut labore et dolore magna aliqua?. Ut enim ad minim veniam, quis nostrud
                                   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
@@ -121,8 +121,8 @@ export default function SignIn() {
                                             <div className="w-full">
                                                 <button
                                                     disabled={loading}
-                                                    className={loading ? "flex flex-row justify-center items-center disabled opacity-30 cursor-not-allowed w-full mt-3 bg-blue-900 shadow-lg rounded-full hover:bg-blue-800 text-base text-white font-bold py-6 focus:outline-none focus:shadow-outline"
-                                                        : "flex flex-row justify-center items-center w-full mt-3 shadow-lg rounded-full bg-blue-900 hover:bg-blue-800 text-base text-white font-bold py-6 focus:outline-none focus:shadow-outline"}
+                                                    className={loading ? "flex flex-row justify-center items-center disabled opacity-30 cursor-not-allowed w-full mt-3 bg-blue-900 shadow-lg rounded-md hover:bg-blue-800 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"
+                                                        : "flex flex-row justify-center items-center w-full mt-3 shadow-lg rounded-md bg-blue-900 hover:bg-blue-800 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"}
                                                     
                                                     type="submit"
                                                 >
