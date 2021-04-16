@@ -1,17 +1,21 @@
 import React from 'react'
-import Navbar from "../../../components/navbar"
-import Header from '../../../components/header'
-import QuestionBox from '../../../components/questionbox'
-import verifyToken from "../../api/v1/auth/verifytoken"
+import Navbar from "../../components/navbar"
+import Header from '../../components/header'
+import QuestionBox from '../../components/questionbox'
+import verifyToken from "../api/v1/auth/verifytoken"
 
-function ExamDashboard({ questions, data, startTime }) {
+export default function QuizView({ questions, data, startTime }) {
     return (
         <div className="w-full h-full bg-white">
             <Header title="CSE401 Exam Dashboard" />
             <Navbar username={data.name} />
-            <div className="container mx-auto pt-24">
-                <h2 className="font-bold text-lg py-2">User Interface Design (CSE 401)</h2>
-                <QuestionBox shuffleQuestions={questions} time={startTime} />
+            <div className="w-11/12 mx-auto h-full pt-24 relative">
+                <div className="fixed py-3 w-full">
+                    <h2 className="font-bold text-lg px-9">User Interface Design (CSE 401)</h2>
+                </div>
+                <div className="px-9 pt-10">
+                    <QuestionBox shuffleQuestions={questions} time={startTime} />
+                </div>
             </div>
         </div>
     );
@@ -46,6 +50,3 @@ export async function getServerSideProps(ctx) {
         }
     }
 }
-
-
-export default ExamDashboard

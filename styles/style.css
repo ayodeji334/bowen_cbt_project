@@ -16,3 +16,7 @@ html,body,#__next{
     background-repeat: no-repeat;
     background-attachment: inherit;
 }
+.alert-container{
+    background-color: #000000b7;
+    z-index: 10000;
+}

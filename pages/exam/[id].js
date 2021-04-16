@@ -1,26 +1,28 @@
 import { useRouter } from "next/router"
 import React from 'react'
-import Navbar from "../../../components/navbar"
-import Header from '../../../components/header'
-import verifyToken from "../../api/v1/auth/verifytoken"
+import Navbar from "../../components/navbar"
+import Header from '../../components/header'
+import verifyToken from "../api/v1/auth/verifytoken"
+import AlertContainer from '../../components/alert'
+import { FaTimes } from 'react-icons/fa'
 
-export default function ExamInstructions({ data }) {
+export default function Exam({ data }) {
     const [isAlertOpen, setIsAlertOpen] = React.useState(false);
     const router = useRouter();
 
     const handleStartExam = () => {
         setIsAlertOpen(false);
-        router.push('/exam/exam-dashboard');
+        router.push('/exam/quiz-view');
     };
     
     return (
         <div className="w-full bg-gray-200">
             <Header title="Exam Instructions" />
-            <Navbar username="Odunayo Fawumi"/>
+            <Navbar username={data.name} />
             <div className="container mx-auto pt-24">
                 <div className="w-7/12 mx-auto mt-6 py-9">
                     <div className="bg-white border-2 shadow-md rounded-md w-full p-8">
-                        <h1 className="font-extrabold text-2xl">Hello, Odunayo Fawumi</h1>
+                        <h1 className="font-extrabold text-2xl">Hello, {data.name}</h1>
                         <p className="text-base pt-5">
                             Please make sure you go through the instructions on this page before proceeding. It is your
                             responsibility to comply with this regulation. Unannotated materials must not contain highlighting,
@@ -75,15 +77,22 @@ export default function ExamInstructions({ data }) {
             {
                 isAlertOpen ?
                 <AlertContainer>
-                    <div>
-                        <h1 className="font-semibold text-base text-left px-4 py-3">Start Attempt</h1>
-                        <p className="font-semibold text-base text-left px-4 py-3">Are you sure you want to start the attempt?</p>
-                    </div>
-                    <div className="flex justify-end items-center">
-                        <button className="rounded-md">Cancel</button>
-                        <button
-                            onClick={handleStartExam}
-                            className="rounded-md text-white bg-blue-800 px-3 py-4">Start Attempt</button>
+                    <div className="w-full">
+                        <div className="flex justify-between items-center">
+                            <h1 className="font-bold text-lg text-left py-3">Start Attempt</h1>
+                            <button
+                                onClick={() => setIsAlertOpen(false)}
+                                className="focus:outline-none bg-gray-100 hover:bg-gray-300 text-black p-2 rounded-lg">
+                                <FaTimes />
+                            </button>
+                        </div>
+                        <p className="font-medium text-base text-left py-3">Are you sure you want to start the attempt?</p>
+                        <div className="flex justify-end items-center pt-5">
+                            <button className="rounded-md text-black mr-3 text-base font-semibold bg-gray-300 px-4 py-4">Cancel</button>
+                            <button
+                                onClick={handleStartExam}
+                                className="rounded-md text-white text-base font-semibold bg-blue-800 px-4 py-4">Start Attempt</button>
+                        </div>
                     </div>
                     </AlertContainer>
                     : null
