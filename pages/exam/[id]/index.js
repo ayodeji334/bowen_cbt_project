@@ -5,10 +5,11 @@ import Header from '../../../components/header'
 import verifyToken from "../../api/v1/auth/verifytoken"
 
 export default function ExamInstructions({ data }) {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isAlertOpen, setIsAlertOpen] = React.useState(false);
     const router = useRouter();
 
     const handleStartExam = () => {
+        setIsAlertOpen(false);
         router.push('/exam/exam-dashboard');
     };
     
@@ -62,13 +63,31 @@ export default function ExamInstructions({ data }) {
                         </ol>
                     </div>
                     <div className="w-full text-center my-7 p-8 flex flex-row justify-center items-center">
-                        <button className="focus:ring-blue-900 mt-3 shadow-lg rounded-full bg-blue-900 hover:bg-blue-700 text-case
+                        <button
+                            onClick={() => setIsAlertOpen(true)}
+                            className="focus:ring-blue-900 mt-3 shadow-lg rounded-full bg-blue-900 hover:bg-blue-700 text-case
                      text-white font-semibold p-5 focus:outline-none">
                             Start Attempt
                         </button>
                     </div>
                 </div>
             </div>
+            {
+                isAlertOpen ?
+                <AlertContainer>
+                    <div>
+                        <h1 className="font-semibold text-base text-left px-4 py-3">Start Attempt</h1>
+                        <p className="font-semibold text-base text-left px-4 py-3">Are you sure you want to start the attempt?</p>
+                    </div>
+                    <div className="flex justify-end items-center">
+                        <button className="rounded-md">Cancel</button>
+                        <button
+                            onClick={handleStartExam}
+                            className="rounded-md text-white bg-blue-800 px-3 py-4">Start Attempt</button>
+                    </div>
+                    </AlertContainer>
+                    : null
+            }
         </div>
     )
 }

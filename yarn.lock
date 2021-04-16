@@ -125,6 +125,13 @@
     "@types/bson" "*"
     "@types/node" "*"
 
+"@types/mysql@^2.15.6":
+  version "2.15.18"
+  resolved "https://registry.yarnpkg.com/@types/mysql/-/mysql-2.15.18.tgz#eea3f2845e619db0073d63d821aa99bf2079c95c"
+  integrity sha512-JW74Nh3P/RDAnaP8uXe1qmRpoFBO84SiWvWoSju/F5+2S1kVBi1FbbDoqK/sTZrCCxySaOJnRATvWD+bLcJjAg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*":
   version "14.14.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
@@ -1956,6 +1963,15 @@ semver@^6.0.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+
+serverless-mysql@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/serverless-mysql/-/serverless-mysql-1.5.4.tgz#c8562777e42440d6ebed0f96e17278bafef1f2d6"
+  integrity sha512-q7hJh8NivO2g4CcZ7wy3KTctsFpqx/P4zrVJTwsJJoV9v9QouGv0IFLKXW0rkOqbHSQRvth/eTbf7noYBJzPiQ==
+  dependencies:
+    mysql "^2.18.1"
+  optionalDependencies:
+    "@types/mysql" "^2.15.6"
 
 setimmediate@^1.0.4:
   version "1.0.5"
