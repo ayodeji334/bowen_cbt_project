@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
-//import axios from 'axios'
+import axios from 'axios'
 
 export default function SignIn() {
     const [matric_number, setMatricNumber] = React.useState('');
@@ -16,29 +16,23 @@ export default function SignIn() {
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true);
-        setTimeout(() => {
-          setPassword('');
-          setMatricNumber('');
-          setLoading(false);
-          if (typeof window !== 'undefined') {
-            router.push('/exam');
-            return;
-          }
-      }, 3000);
-
-        // axios.post('/api/v1/auth/login', {
-        //     matric_number, password
-        // }).then(res => {
-        //     setPassword('');
-        //     setMatricNumber('');
-        //     setLoading(false);
-        //     if (typeof window !== 'undefined') {
-        //       router.push('/exam');
-        //       return; 
-        //     }
-        // }).catch(err => {
-        //     setLoading(false);
-        // });
+        console.log(typeof matric_number, typeof password);
+        const resp = axios.post('/api/v1/auth/login', {
+            matric_number, password
+        });
+        resp.then(res => {
+            setPassword('');
+            setMatricNumber('');
+            setLoading(false);
+            console.log(res);
+            if (typeof window !== 'undefined') {
+                router.push('/exam');
+                return;
+            }
+        }).catch(err => {
+            setLoading(false);
+            console.log(err.response);
+        });
     }
 
     const togglePassword = () => {
@@ -126,7 +120,7 @@ export default function SignIn() {
                                                     
                                                     type="submit"
                                                 >
-                                                   { loading ? "Loding" : "Login" }
+                                                   { loading ? "Loding...." : "Login" }
                                                 </button>
                                             </div>
                                         </form>

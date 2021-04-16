@@ -1,7 +1,8 @@
 import Header from '../components/header'
 import Link from 'next/link'
 import React from 'react'
-//import axios from 'axios';
+import axios from 'axios';
+import { Router, useRouter } from 'next/router';
 
 export default function SignUp() {
     const [matric_number, setMatricNumber] = React.useState('');
@@ -12,14 +13,13 @@ export default function SignUp() {
     const [dept, setDept] = React.useState('');
     const [departments, setDepartments] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const router = useRouter();
 
     React.useEffect(() => {
         let subscribe = true;
-
         const getCollegeDepts = async () => {
             if (college !== '') {
                 let college_id;
-
                 switch (college.toString()) {
                     case '':
                         college_id = 0;
@@ -51,45 +51,59 @@ export default function SignUp() {
                     default:
                         break;
                 };
-
-                // await axios.post('/api/v1/programmes', { college_id })
-                // .then(res => {
-                //     console.log(res);
-                //     if (subscribe) {
-                //         setDepartments(res.data.result);
-                //     }
-                // })
-                // .catch(err => console.log(err.response));
+                await axios.post('/api/v1/programmes', { college_id })
+                .then(res => {
+                    console.log(res);
+                    if (subscribe) {
+                        setDepartments(res.data.result);
+                    }
+                })
+                .catch(err => console.log(err.response));
             }else {
                 setDepartments([]);
             }
         }
-
         getCollegeDepts();
-
         return () => subscribe = false;
     }, [college]);
 
-    const handleCreateAccount = (e) => {
+    const handleCreateAccount = async (e) => {
         e.preventDefault();
          setLoading(true);
-        // // axios.post('/api/v1/auth/register', {
-        // //     surname, firstname, matric_number, email, college, dept
-        // // }).then(res => {
-        // //     setEmail('');
-        // //     setFirstName('');
-        // //     setSurname('');
-        // //     setMatricNumber('');
-        // //     setCollege('');
-        // //     setDept("");
-        // //     setLoading(false);
-        // // }).catch(err => {
-        // //     setLoading(false);
-        // //     if (err.response.data.status === 401) {
-        // //     } else {
-        // //         console.log(err);
-        // //     }
-        // // });
+        const resp = await axios.post('/api/v1/auth/register', {
+            surname, firstname, matric_number, email, college, dept
+        });
+        if (resp.status === 200) {
+            alert(resp.data.message);
+            if (typeof window !== 'undefined') {
+                router.push('/exam');
+                return;
+            }
+        } else {
+            console.log(resp);
+        }
+        /*.then(res => {
+            setEmail('');
+            setFirstName('');
+            setSurname('');
+            setMatricNumber('');
+            setCollege('');
+            setDept("");
+            setLoading(false);
+            if (typeof window !== 'undefined') {
+                router.push('/exam');
+                return;
+            }
+        }).catch(err => {
+            setLoading(false);
+            console.log(err.response);
+            // if (err.response.data.status === 401) {
+            //     console.log(err);
+            // } else {
+            //     console.log(err);
+            // }
+        });
+        */ 
     }
 
     return (
@@ -255,10 +269,9 @@ export default function SignUp() {
                                                 className={loading ? "flex flex-row justify-center items-center disabled opacity-30 cursor-not-allowed w-full mt-7 shadow-sm rounded-md bg-blue-900 hover:bg-blue-600 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"
                                             : "flex flex-row justify-center items-center w-full mt-7 shadow-lg rounded-md bg-blue-900 hover:bg-blue-600 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"}
                                                     type="submit">
-                                                    {
-                                                        loading ? <Spinner className="mr-4" size="md" color="#fff" /> : null
+                                                   {
+                                                        loading ? "Loading..." : "Create Account"
                                                     }
-                                                Create Account
                                             </button>
                                         </div>
                                     </form>
