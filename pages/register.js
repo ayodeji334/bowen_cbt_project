@@ -73,16 +73,7 @@ export default function SignUp() {
         const resp = await axios.post('/api/v1/auth/register', {
             surname, firstname, matric_number, email, college, dept
         });
-        if (resp.status === 200) {
-            alert(resp.data.message);
-            if (typeof window !== 'undefined') {
-                router.push('/exam');
-                return;
-            }
-        } else {
-            console.log(resp);
-        }
-        /*.then(res => {
+        resp.then(res => {
             setEmail('');
             setFirstName('');
             setSurname('');
@@ -97,13 +88,7 @@ export default function SignUp() {
         }).catch(err => {
             setLoading(false);
             console.log(err.response);
-            // if (err.response.data.status === 401) {
-            //     console.log(err);
-            // } else {
-            //     console.log(err);
-            // }
         });
-        */ 
     }
 
     return (

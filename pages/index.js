@@ -16,7 +16,6 @@ export default function SignIn() {
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true);
-        console.log(typeof matric_number, typeof password);
         const resp = axios.post('/api/v1/auth/login', {
             matric_number, password
         });
