@@ -1,28 +1,16 @@
-import Router, { useRouter } from "next/router"
-import * as React from 'react'
-// import {
-//     AlertDialog,
-//     AlertDialogBody,
-//     AlertDialogFooter,
-//     AlertDialogHeader,
-//     AlertDialogContent,
-//     AlertDialogOverlay,
-//     useDisclosure,
-//     AlertDialogCloseButton,
-//     Button
-// } from "@chakra-ui/react"
+import { useRouter } from "next/router"
+import React from 'react'
 import Navbar from "../../../components/navbar"
 import Header from '../../../components/header'
-//import verifyToken from "../api/v1/auth/verifyToken"
+import verifyToken from "../../api/v1/auth/verifytoken"
 
 export default function ExamInstructions({ data }) {
-    // const { isOpen, onOpen, onClose } = useDisclosure()
-    // const cancelRef = React.useRef();
+    const [isOpen, setIsOpen] = React.useState(false);
     const router = useRouter();
 
-    // const handleStartExam = () => {
-    //     router.push('/exam/exam-dashboard');
-    // }
+    const handleStartExam = () => {
+        router.push('/exam/exam-dashboard');
+    };
     
     return (
         <div className="w-full bg-gray-200">
@@ -81,68 +69,31 @@ export default function ExamInstructions({ data }) {
                     </div>
                 </div>
             </div>
-
-            {/* <AlertDialog
-                motionPreset="slideInBottom"
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                isOpen={isOpen}
-                isCentered
-            >
-                <AlertDialogOverlay />
-                <AlertDialogContent>
-                    <AlertDialogHeader>Proceed to the Exam</AlertDialogHeader>
-                    <AlertDialogCloseButton />
-                    <AlertDialogBody>
-                        Are you sure you want to start the exam now?
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                        <Button
-                            className="outline-none ring-1"
-                            ref={cancelRef} onClick={onClose}
-                            _focus={{ outline: "none" }}
-                            _hover={{outline: "none"}}
-                        >
-                            No
-                        </Button>
-                        <Button
-                            _focus={{ outline: "none" }}
-                            _hover={{outline: "none"}}
-                            className="outline-none ring-1"
-                            onClick={handleStartExam}
-                            colorScheme="blue"
-                            ml={3}
-                        >
-                            Start Now
-                        </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>s
-            </AlertDialog> */}
         </div>
     )
 }
 
-// export async function getServerSideProps(ctx) {
-//     const resp = verifyToken(ctx);
+export async function getServerSideProps(ctx) {
+    const resp = verifyToken(ctx);
 
-//     if (!ctx.req && resp.status === 401 || resp.status === 400) {
-//         Router.replace('/login');
-//         return {
-//             props: {}
-//         };
-//     }
+    if (!ctx.req && resp.status === 401 || resp.status === 400) {
+        Router.replace('/');
+        return {
+            props: {}
+        };
+    }
     
-//     if (ctx.req && resp.status === 401 || resp.status === 400) {
-//         ctx.res.writeHead(302, {
-//             Location: process.env.NEXTAUTH_URL + '/login'
-//         });
-//         ctx.res.end();
-//         return { props: {} };
-//     }
+    if (ctx.req && resp.status === 401 || resp.status === 400) {
+        ctx.res.writeHead(302, {
+            Location: process.env.NEXTAUTH_URL
+        });
+        ctx.res.end();
+        return { props: {} };
+    }
 
-//     return {
-//         props: {
-//             data: resp.current_user
-//         }
-//     }
-// }
+    return {
+        props: {
+            data: resp.current_user
+        }
+    }
+}

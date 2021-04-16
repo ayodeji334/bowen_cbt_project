@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "../../components/header";
 import Navbar from "../../components/navbar";
-import verifyToken from "../../api/v1/auth/verifyToken";
+import verifyToken from "../api/v1/auth/verifytoken";
 
 export default function AvaliableCourses({ data }) {
     const avaliableCourses = [
