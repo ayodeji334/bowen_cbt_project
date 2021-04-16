@@ -1,7 +1,7 @@
 import React from 'react'
-import Header from '../../components/header'
-import Navbar from "../../components/navbar"
-import QuestionBox from '../../components/questionBox'
+import Navbar from "../../../components/navbar"
+import Header from '../../../components/header'
+import QuestionBox from '../../../components/questionbox'
 import verifyToken from "../../api/v1/auth/verifytoken"
 
 function ExamDashboard({ questions, data, startTime }) {
