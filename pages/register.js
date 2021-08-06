@@ -2,25 +2,59 @@ import Header from '../components/header'
 import Link from 'next/link'
 import React from 'react'
 import axios from 'axios';
-import { Router, useRouter } from 'next/router';
+import Image from "next/image";
+// import { Router, useRouter } from 'next/router';
+// import { useFormik } from 'formik';
+// import * as Yup from 'yup';
+import verifyToken from './api/v1/auth/verifytoken';
+import router from 'next/router';
+import { FaCheck } from 'react-icons/fa';
 
 export default function SignUp() {
-    const [matric_number, setMatricNumber] = React.useState('');
-    const [surname, setSurname] = React.useState('');
-    const [firstname, setFirstName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [college, setCollege] = React.useState('');
-    const [dept, setDept] = React.useState('');
+    const [matricNumber, setMatricNumber] = React.useState("");
+    const [firstName, setFirstName] = React.useState("");
+    const [surname, setSurname] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [dept, setDept] = React.useState("");
+    const [college, setCollege] =  React.useState("");
     const [departments, setDepartments] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const router = useRouter();
+    const [isAuthSuccess, setIsAuthSuccess] = React.useState(false);
+
+   // const router = useRouter();
+
+    const handleRegistration = async (e) => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        const user = {
+            matricNumber,
+            firstName,
+            surname,
+            email,
+            dept,
+            college
+        };
+
+        await axios.post('/api/v1/auth/register', user).then(res => {
+            setLoading(false);
+            setIsAuthSuccess(true);
+            setTimeout(() => router.push("/exam"));
+
+        }).catch(err => {
+            setLoading(false);
+            alert(err.response.data.message);
+        });
+    };
 
     React.useEffect(() => {
-        let subscribe = true;
         const getCollegeDepts = async () => {
-            if (college !== '') {
-                let college_id;
-                switch (college.toString()) {
+            let college_id;
+
+            if (college !== "") {
+
+                switch (college) {
                     case '':
                         college_id = 0;
                         break;
@@ -51,58 +85,31 @@ export default function SignUp() {
                     default:
                         break;
                 };
-                await axios.post('/api/v1/programmes', { college_id })
-                .then(res => {
-                    console.log(res);
-                    if (subscribe) {
-                        setDepartments(res.data.result);
-                    }
-                })
-                .catch(err => console.log(err.response));
-            }else {
-                setDepartments([]);
+
+                await axios.post("/api/v1/programmes", { college_id }).then(res => {
+                    setDepartments([...res.data.result]);
+                }).catch(err => {
+                    console.log(err.response)
+                });
             }
-        }
+        };
+
         getCollegeDepts();
-        return () => subscribe = false;
+
     }, [college]);
 
-    const handleCreateAccount = async (e) => {
-        e.preventDefault();
-         setLoading(true);
-        const resp = await axios.post('/api/v1/auth/register', {
-            surname, firstname, matric_number, email, college, dept
-        });
-        resp.then(res => {
-            setEmail('');
-            setFirstName('');
-            setSurname('');
-            setMatricNumber('');
-            setCollege('');
-            setDept("");
-            setLoading(false);
-            if (typeof window !== 'undefined') {
-                router.push('/exam');
-                return;
-            }
-        }).catch(err => {
-            setLoading(false);
-            console.log(err.response);
-        });
-    }
 
     return (
-       <div className="w-full h-full bg_overlay">
+       <div className="w-full h-full">
             <Header title="Create a New Account" />
             <div className="w-full h-full">
                 <div className="w-full h-full flex flex-row">
-                    <div className="hidden lg:block lg:w-1/2 h-full px-20">
-                        <div className="h-full w-full flex flex-col justify-center text-white text-left">
-                            <h1 className="text-5xl font-extrabold py-5 mb-4">Hello, Bowenite</h1>
-                            <h2 className="text-3xl font-extrabold py-3">Instructions</h2>
-                            <p className="text-xl font-normal pt-3">
+                    <div className="hidden lg:block lg:w-1/2 h-full bg-purple-900">
+                        <div className="h-full mx-auto w-9/12 flex flex-col justify-center text-white text-left">
+                            <h1 className="text-2xl font-extrabold py-4 mb-4">Create account and Start your exam</h1>
+                            <p className="text-lg xl:text-base pt-2">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                incididunt ut labore et dolore magna aliqua?. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
                                 dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
@@ -110,110 +117,107 @@ export default function SignUp() {
                             </p>
                         </div>
                     </div>
-                    <div className="w-full lg:w-1/2 h-full">
+                    <div className="w-full lg:w-1/2 h-full bg-white">
                         <div className="h-full w-full">
-                            <div className="w-full h-full flex flex-col items-center overflow-y-scroll overflow-x-hidden py-16">
-                                <div className="w-11/12 lg:w-9/12 bg-white rounded-lg shadow-xl border-2 py-5 px-7 lg:px-10">
-                                    <h2 className="text-2xl font-extrabold pt-6 pb-2">Create Account </h2>
-                                    <p className="pb-4 text-base">Get started by creating a new account.</p> 
-                                    <form onSubmit={handleCreateAccount} className="py-9">
+                            <div className="w-full h-full flex flex-col items-center overflow-y-scroll overflow-x-hidden py-10">
+                                <div className="w-11/12 lg:w-9/12 py-5 px-7 lg:px-10">
+                                    <h2 className="text-xl font-extrabold pt-6 pb-2">Create Account </h2>
+                                    <p className="pb-4 text-base">Get started by creating an account.</p> 
+
+                                    <form onSubmit={handleRegistration} className="py-4">
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="email">
-                                            Firstname
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="firstname">
+                                                Firstname
                                             </label>
-                                            <input
+                                            <input 
                                                 required
+                                                onChange={(e) => setFirstName(e.target.value)}
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
-                                                leading-tight
-                                                text-sm
-                                                focus:outline-none
-                                                focus:shadow-outline"
+                                                    py-3 px-3 text-gray-700
+                                                    leading-tight
+                                                    text-sm
+                                                    focus:outline-none
+                                                    focus:shadow-outline"
                                                 type="text"
+                                                value={firstName}
                                                 placeholder="Enter your name"
-                                                value={firstname}
-                                                onChange={(e) => {
-                                                    e.preventDefault();
-                                                    setFirstName(e.target.value);
-                                                }}
+                                                id="firstname"
                                             />
                                         </div>
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="surname">
-                                            Surname
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="surname">
+                                                Surname
                                             </label>
                                             <input
+                                                onChange={(e) => setSurname(e.target.value)}
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
+                                                py-3 px-3 text-gray-700
                                                 leading-tight
                                                 text-sm
                                                 focus:outline-none
                                                 focus:shadow-outline"
+                                                value={surname}
                                                 type="text"
                                                 placeholder="Enter your surname"
-                                                value={surname}
+                                                id="surname"
                                                 required
-                                                onChange={(e) => {
-                                                    e.preventDefault();
-                                                    setSurname(e.target.value);
-                                                }}
                                             />
                                         </div>
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="email">
-                                            Email
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="email">
+                                                Email
                                             </label>
                                             <input
                                                 required
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
+                                                py-3 px-3 text-gray-700
                                                 leading-tight
                                                 text-sm
                                                 focus:outline-none
                                                 focus:shadow-outline"
                                                 type="email"
-                                                placeholder="Enter your email here"
+                                                onChange={(e) => setEmail(e.target.value)}
                                                 value={email}
-                                                onChange={(e) => {
-                                                    setEmail(e.target.value);
-                                                }}
+                                                placeholder="example@gmail.com"
+                                                id="email"
                                             />
                                         </div>
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="matric_number">
-                                            Matric Number
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="matric_number">
+                                                Matric Number
                                             </label>
                                             <input
                                                 required
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
+                                                py-3 px-3 text-gray-700
                                                 leading-tight
                                                 text-sm
                                                 focus:outline-none
                                                 focus:shadow-outline"
                                                 type="text"
                                                 placeholder="Enter your Matric Number"
-                                                value={matric_number}
-                                                onChange={(e) => {
-                                                    e.preventDefault();
-                                                    setMatricNumber(e.target.value);
-                                                }}
+                                                id="matric_number"
+                                                onChange={(e) => setMatricNumber(e.target.value)}
+                                                value={matricNumber}
                                             />
                                         </div>  
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="matric_number">
-                                            Select College
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="matric_number">
+                                                Select College
                                             </label>
                                             <select
                                                 required
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
+                                                py-3 px-3 text-gray-700
                                                 leading-tight
                                                 text-sm
                                                 focus:outline-none
-                                                focus:shadow-outline" name="college" value={college} onChange={(e) => {
-                                                    setCollege(e.target.value);
-                                                }}>
+                                                focus:shadow-outline" 
+                                                name="college" 
+                                                id="college"
+                                                value={college}
+                                                onChange={(e) => setCollege(e.target.value)}
+                                            >
                                                     <option value="">Select your College</option>
                                                     <option value="COAES">College of Agriculture, Engineering & Science</option>
                                                     <option value="COMSS">College of Social & Management Science </option>
@@ -226,36 +230,52 @@ export default function SignUp() {
                                                 </select>
                                         </div>
                                         <div className="mb-2">
-                                            <label className="block text-black text-base font-bold mb-2" htmlFor="matric_number">
-                                            Select Department
+                                            <label className="block text-black text-base capitalize font-bold mb-2" htmlFor="matric_number">
+                                                Select Department
                                             </label>
                                             <select
                                                 required
+                                                value={dept}
                                                 className="border-2 rounded-md w-full
-                                                py-5 px-3 text-gray-700
+                                                py-3 px-3 text-gray-700
                                                 leading-tight
                                                 text-sm
                                                 focus:outline-none
-                                                focus:shadow-outline" name="dept" value={dept} onChange={(e) => {
-                                                    e.preventDefault();
-                                                    setDept(e.target.value);
-                                                }}>
-                                                    <option value="">Choose your department</option>
-                                                    {
+                                                focus:shadow-outline" 
+                                                id="department"
+                                                onChange={(e) => setDept(e.target.value)}
+                                            >
+                                                <option value="">Choose your department</option>
+                                                {
                                                     departments.map(dept => (
-                                                        <option key={dept.id} value={dept.programme} className="capitalize">{dept.programme}</option>
-                                                        ))
+                                                        <option 
+                                                            key={dept.id} 
+                                                            value={dept.title} 
+                                                            className="capitalize"
+                                                        >
+                                                            {dept.title}
+                                                        </option>
+                                                    ))
                                                 } 
                                             </select>
                                         </div>   
                                         <div className="w-full">
                                             <button
                                                 disabled={loading}
-                                                className={loading ? "flex flex-row justify-center items-center disabled opacity-30 cursor-not-allowed w-full mt-7 shadow-sm rounded-md bg-blue-900 hover:bg-blue-600 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"
-                                            : "flex flex-row justify-center items-center w-full mt-7 shadow-lg rounded-md bg-blue-900 hover:bg-blue-600 text-base text-white font-semibold py-5 focus:outline-none focus:shadow-outline"}
-                                                    type="submit">
-                                                   {
-                                                        loading ? "Loading..." : "Create Account"
+                                                className={
+                                                    loading ? `flex flex-row justify-center items-center disabled 
+                                                            opacity-30 cursor-not-allowed w-full mt-7 shadow-sm rounded-full bg-blue-900 
+                                                        hover:bg-blue-600 text-base text-white font-semibold py-4 focus:outline-none 
+                                                        focus:shadow-outline`
+                                                    : isAuthSuccess ? `flex flex-row justify-center items-center w-full mt-7 
+                                                    shadow-lg rounded-full bg-green-900 hover:bg-green-600 text-base 
+                                                text-white font-semibold py-4 focus:outline-none focus:shadow-outline` :`flex flex-row justify-center items-center w-full mt-7 
+                                                    shadow-lg rounded-full bg-blue-900 hover:bg-blue-600 text-base 
+                                                text-white font-semibold py-4 focus:outline-none focus:shadow-outline`
+                                                }
+                                                type="submit">
+                                                    {
+                                                        loading ? "Loading..." : isAuthSuccess ? <FaCheck /> : "Create Account"
                                                     }
                                             </button>
                                         </div>
@@ -264,7 +284,7 @@ export default function SignUp() {
                                         <p className="text-black font-medium text-base">
                                         Already have an account?
                                             <Link href="/">
-                                                <a className="pl-2 text-base text-blue-700 hover:text-red">Click here to Login</a>
+                                                <a className="pl-2 text-base text-blue-700 hover:text-red">Login here</a>
                                             </Link>
                                         </p>
                                     </div>
@@ -276,4 +296,24 @@ export default function SignUp() {
             </div>
         </div>
     )
+}
+
+export async function getServerSideProps(ctx) {
+    const resp = verifyToken(ctx);
+    
+    if (ctx.req && resp.status === 200 || resp.status === 200) {
+        ctx.res.writeHead(200, {
+            Location: `${process.env.NEXT_DEV_BASE_URL}/exam`
+        });
+
+        ctx.res.end();
+
+        return { props: {
+            data: resp.current_user
+        }};
+    }
+
+    return {
+        props: {}
+    }
 }

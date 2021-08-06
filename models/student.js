@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
-const Schema = mongoose.Schema
+
+const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
     _id: {
@@ -20,6 +21,7 @@ const studentSchema = new Schema({
         required: true,
     },
     matric_number: {
+        unique: true,
         type: String,
         required: true,
     },
@@ -41,4 +43,4 @@ const studentSchema = new Schema({
     }
 });
 
-module.exports = mongoose.models.Student || mongoose.model('Student', studentSchema);
+module.exports = mongoose.model('students', studentSchema);

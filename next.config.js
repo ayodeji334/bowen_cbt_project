@@ -1,6 +1,6 @@
 module.exports = {
     env: {
-        mongodbUrl: "mongodb+srv://odunayo:GDjfldzyGUfaS40Q@cluster0.pik51.mongodb.net/bowen-cbt-project?retryWrites=true&w=majority",
-        atlasDbPassword: 'LymIXEKPIk0PPVXy'
+        MONGODB_URI: "mongodb+srv://admin_2:Rv3QxOa0cBgBM4oY@cluster0.2v79p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+        MONGODB_DB: 'LymIXEKPIk0PPVXy'
     }
 }
